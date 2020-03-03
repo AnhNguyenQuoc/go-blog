@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/AnhNguyenQuoc/go-blog/lib"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
@@ -23,7 +24,7 @@ func main() {
 
 func HelloWorld(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
 	w.WriteHeader(http.StatusOK)
-	fmt.Fprintln(w, "Hello 33333!")
+	lib.ParseTemplate(w, "views/layout/index", map[string]string{"Name": "Anh"})
 }
 
 func GetPort() string {

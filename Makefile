@@ -24,11 +24,6 @@ clean:
 run:
 	$(GORUN)
 
-deps:
-	$(GODEPCMD) get
-	$(GODEPCMD) update
-	$(GODEPCMD) save
-
 build-linux:
 	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_NAME) -v .
 
