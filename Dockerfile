@@ -6,19 +6,23 @@ ENV GOPATH=/go
 
 ENV PATH=$GOPATH/bin:$PATH
 
-RUN mkdir -p $GOPATH/src/app
+RUN mkdir -p $GOPATH/src/github.com/AnhNguyenQuoc/go-blog
 
-WORKDIR $GOPATH/src/app
+WORKDIR $GOPATH/src/github.com/AnhNguyenQuoc/go-blog
+
+COPY go.mod .
+
+COPY go.sum .
+
+RUN go mod download
 
 COPY . .
-
-RUN go get github.com/tools/godep && godep restore
 
 RUN go get github.com/githubnemo/CompileDaemon
 
 RUN go build -o main .
 
-VOLUME $GOPATH/src/app
+VOLUME $GOPATH/src/github.com/AnhNguyenQuoc/go-blog
 
 EXPOSE 3000
 
