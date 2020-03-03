@@ -3,12 +3,12 @@ version: '3'
 services:
   app:
     container_name: go_app
-    build: .
+    build: ./
     ports:
       - 3000:3000
     restart: on-failure
     volumes:
-      - ${ROOT_PROJECT}:/go/src/app/
+      - ./:/go/src/app/
     depends_on:
       - postgresql
     networks:
