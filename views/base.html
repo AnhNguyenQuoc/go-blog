@@ -4,9 +4,14 @@
     <head>
         <meta charset="UTF-8">
         {{template "title"}}
-        <link rel="stylesheet" href="/static/stylesheets/main.css" />
+        <link rel="stylesheet" href="/static/stylesheets/tailwind.min.css"/>
+        <link rel="stylesheet" href="/static/stylesheets/main.css"/>
     </head>
-    <body>
+    <body class="container mx-auto">
+    <div class="flex flex-row bg-gray-200">
+        <a href="/" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Index</a>
+        <a href="/register" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Register</a>
+    </div>
     {{template "content" .}}
     </body>
     </html>

@@ -1,8 +1,12 @@
 package models
 
 import (
+	"errors"
 	"github.com/jinzhu/gorm"
+	"regexp"
 )
+
+var regexEmail = regexp.MustCompile(`^\w.+@(\w)+\.\w+$`)
 
 type User struct {
 	gorm.Model
@@ -11,18 +15,36 @@ type User struct {
 	Email    string `gorm:"type:varchar(100);unique_index;unique;not_null"`
 }
 
-type UserService struct {
-	DB *gorm.DB
+func (user *User) CreateUser(db *gorm.DB) error {
+	dbc := db.Create(&User{
+		Username: user.Username,
+		Password: user.Password,
+		Email:    user.Email,
+	})
+	if dbc.Error != nil {
+		return errors.New("data need to unique. Please check again")
+	}
+	return nil
 }
 
-func (s *UserService) CreateUser(_ User) (User, error) {
-	u := User{
-		Username: "test",
-		Password: "test",
-		Email:    "test",
+func (user User) Validate() map[string]string {
+	err := map[string]string{}
+
+	if user.Username == "" {
+		err["name"] = "The username field is required"
 	}
 
-	s.DB.Create(&u)
+	if user.Email == "" {
+		err["email"] = "The email field is required"
+	}
 
-	return u, nil
+	if !regexEmail.MatchString(user.Email) {
+		err["emailFormat"] = "The email field is not format email"
+	}
+
+	if user.Password == "" {
+		err["password"] = "The password field is required"
+	}
+
+	return err
 }
