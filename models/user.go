@@ -15,12 +15,12 @@ type User struct {
 	Email    string `gorm:"type:varchar(100);unique_index;unique;not_null"`
 }
 
-func (user *User) CreateUser(db *gorm.DB) error {
-	dbc := db.Create(&User{
-		Username: user.Username,
-		Password: user.Password,
-		Email:    user.Email,
-	})
+type UserService struct {
+	DB *gorm.DB
+}
+
+func (r *UserService) CreateUser(user *User) error {
+	dbc := r.DB.Create(user)
 	if dbc.Error != nil {
 		return errors.New("data need to unique. Please check again")
 	}

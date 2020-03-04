@@ -14,15 +14,15 @@
     <form method="post" action="/register">
         <div class="flex justify-around bg-gray-200 p-2">
             <label class="p-2">Username</label>
-            <input type="text" name="username" class="w-full"/>
+            <input type="text" name="username" class="w-full" required autocomplete="false"/>
         </div>
         <div class="flex justify-around bg-gray-200 p-2">
             <label class="p-2 mr-8">Email</label>
-            <input type="email" name="email" class="w-full"/>
+            <input type="text" name="email" class="w-full" required autocomplete="false"/>
         </div>
         <div class="flex justify-around bg-gray-200 p-2">
             <label class="p-2">Password</label>
-            <input type="password" name="password" class="w-full"/>
+            <input type="password" name="password" class="w-full" required autocomplete="false"/>
         </div>
         <div class="text-center bg-gray-200 p-2">
             <button type="submit" class="bg-gray-200 text-center p-2 border-teal-400 border-solid border">Submit

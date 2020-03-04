@@ -10,17 +10,19 @@ import (
 	"net/http"
 )
 
-type UserController struct {
-	db *gorm.DB
-}
+var userService *models.UserService
 
 type ErrorMessage struct {
 	Error map[string]string
 }
 
+type UserController struct {
+}
+
 func UserRouter(r *httprouter.Router, db *gorm.DB) {
-	r.GET("/register", UserController{db: db}.Create)
-	r.POST("/register", UserController{db: db}.Create)
+	userService = &models.UserService{DB: db}
+	r.GET("/register", UserController{}.Create)
+	r.POST("/register", UserController{}.Create)
 }
 
 func (u UserController) Create(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -46,7 +48,8 @@ func (u UserController) Create(w http.ResponseWriter, r *http.Request, _ httprou
 			}
 			return
 		} else {
-			err := user.CreateUser(u.db)
+			user.Password, _ = lib.HashPassword(r.FormValue("password"))
+			err := userService.CreateUser(user)
 			if err != nil {
 				errorMessage := ErrorMessage{Error: map[string]string{"Error": fmt.Sprintln(err)}}
 				err = lib.ParseTemplate(w, "/users/create", errorMessage)

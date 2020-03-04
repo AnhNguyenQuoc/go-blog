@@ -37,14 +37,12 @@ func init() {
 func main() {
 	defer db.Close()
 	router := httprouter.New()
-
 	os.Setenv("PORT", "3000") //TODO: remove when push to heroku
 
 	// Setup custom message validate
 	lib.CustomMessageErrorValidate()
-
 	// Other router
-	router.GET("/", HelloWorld)
+	router.GET("/", controllers.HelloWorld)
 	// User router
 	controllers.UserRouter(router, db)
 	// Static file router
@@ -52,12 +50,4 @@ func main() {
 	// Start server
 	fmt.Println("Listening from server...")
 	log.Fatal(http.ListenAndServe(lib.GetPort(), router))
-}
-
-func HelloWorld(w http.ResponseWriter, _ *http.Request, _ httprouter.Params) {
-	w.WriteHeader(http.StatusOK)
-	err = lib.ParseTemplate(w, "layout/index", map[string]string{"Name": "Anh"})
-	if err != nil {
-		log.Fatal(err)
-	}
 }
