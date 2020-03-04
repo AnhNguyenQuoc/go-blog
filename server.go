@@ -2,15 +2,16 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+
 	"github.com/AnhNguyenQuoc/go-blog/controllers"
 	"github.com/AnhNguyenQuoc/go-blog/lib"
 	"github.com/AnhNguyenQuoc/go-blog/migrate"
 	"github.com/jinzhu/gorm"
 	"github.com/joho/godotenv"
 	"github.com/julienschmidt/httprouter"
-	"log"
-	"net/http"
-	"os"
 )
 
 var dbConfig migrate.DBConfig
@@ -35,7 +36,6 @@ func init() {
 }
 
 func main() {
-	defer db.Close()
 	router := httprouter.New()
 	os.Setenv("PORT", "3000") //TODO: remove when push to heroku
 
