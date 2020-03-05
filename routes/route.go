@@ -10,4 +10,5 @@ func InitRoute(r *httprouter.Router, db *gorm.DB) {
 	controllers.UserRouter(r, db)
 	controllers.AuthRouter(r, db)
 	controllers.LayoutRouter(r, db)
+	controllers.TodoRouter(r, db)
 }

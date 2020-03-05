@@ -1,0 +1,40 @@
+{{define "title"}}<title>Todo list</title>{{end}}
+
+{{define "content"}}
+    {{if .Email}}
+        <table class="md:table-auto">
+            <thead>
+            <tr>
+                <th class="w-1/2 px-4 py-2">Name</th>
+                <th class="w-1/4 px-4 py-2"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="border px-4 py-2">
+                    <input type="text" name="name" class="placeholder-black" placeholder="Enter content"
+                           id="name-todo"/>
+                </td>
+                <td class="border px-4 py-2 flex flex-col">
+                    <button type="button" class="w-full bg-blue-200" id="todo-create-btn" onclick="createTodo()">
+                        Create
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    {{end}}
+{{end}}
+
+
+{{define "javascript"}}
+    <script>
+        function createTodo() {
+            const name = document.getElementById("name-todo").value
+            const xmlHTTP = new XMLHttpRequest();
+            xmlHTTP.open("POST", "/todo");
+            xmlHTTP.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+            xmlHTTP.send(JSON.stringify({"name": name}))
+        }
+    </script>
+{{end}}
