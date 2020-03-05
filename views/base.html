@@ -10,9 +10,19 @@
     <body class="container mx-auto">
     <div class="flex flex-row bg-gray-200">
         <a href="/" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Index</a>
-        <a href="/register" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Register</a>
+        {{if .Email}}
+            <form action="/logout" method="post">
+                <button type="submit" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Logout</button>
+            </form>
+        {{else}}
+            <a href="/register" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Register</a>
+            <a href="/login" class="text-center px-4 py-2 m-2 text-gray-700 bg-gray-500">Login</a>
+        {{end}}
     </div>
     {{template "content" .}}
     </body>
     </html>
 {{end}}
+
+
+{{define "title"}}<title>Base title</title>{{end}}

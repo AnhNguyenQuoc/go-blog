@@ -1,6 +1,7 @@
 package lib
 
 import (
+	"log"
 	"os"
 	"testing"
 )
@@ -20,5 +21,11 @@ func TestBcrypt(t *testing.T) {
 	hashPassword, _ := HashPassword(mypwd)
 	if auth := AuthenticatePassword(mypwd, hashPassword); !auth {
 		t.Error("Error Bcrypt algothym")
+	}
+}
+
+func CheckError(err error) {
+	if err != nil {
+		log.Fatal(err)
 	}
 }

@@ -6,7 +6,6 @@ import (
 	"github.com/AnhNguyenQuoc/go-blog/models"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
-	"log"
 	"net/http"
 )
 
@@ -28,10 +27,7 @@ func UserRouter(r *httprouter.Router, db *gorm.DB) {
 func (u UserController) Create(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	if r.Method == "GET" {
 		w.WriteHeader(http.StatusOK)
-		err := lib.ParseTemplate(w, "/users/create", nil)
-		if err != nil {
-			log.Fatal(err)
-		}
+		lib.ParseTemplate(w, "/users/create", nil)
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		user := &models.User{
@@ -42,19 +38,16 @@ func (u UserController) Create(w http.ResponseWriter, r *http.Request, _ httprou
 		err := user.Validate()
 		if len(err) != 0 {
 			errorMessage := ErrorMessage{err}
-			err := lib.ParseTemplate(w, "/users/create", errorMessage)
-			if err != nil {
-				log.Fatal(err)
-			}
+			lib.ParseTemplate(w, "/users/create", errorMessage)
 			return
-		} else {
+		} else if r.Method == "POST" {
 			user.Password, _ = lib.HashPassword(r.FormValue("password"))
 			err := userService.CreateUser(user)
 			if err != nil {
 				errorMessage := ErrorMessage{Error: map[string]string{"Error": fmt.Sprintln(err)}}
-				err = lib.ParseTemplate(w, "/users/create", errorMessage)
+				lib.ParseTemplate(w, "/users/create", errorMessage)
 			}
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			lib.ParseTemplate(w, "layout/index", nil)
 			return
 		}
 	}

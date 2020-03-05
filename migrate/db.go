@@ -28,7 +28,6 @@ type Model struct {
 func InitDB(config DBConfig) (*gorm.DB, error) {
 	db, err := gorm.Open("postgres", fmt.Sprintf("host=%v port=%v user=%v dbname=%v password=%v sslmode=disable",
 		config.Host, config.Port, config.User, config.DBName, config.Password))
-	defer db.Close()
 	if err != nil {
 		return nil, err
 	}

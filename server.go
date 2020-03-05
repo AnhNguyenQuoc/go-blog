@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/AnhNguyenQuoc/go-blog/routes"
 	"log"
 	"net/http"
 	"os"
 
-	"github.com/AnhNguyenQuoc/go-blog/controllers"
 	"github.com/AnhNguyenQuoc/go-blog/lib"
 	"github.com/AnhNguyenQuoc/go-blog/migrate"
 	"github.com/jinzhu/gorm"
@@ -32,19 +32,14 @@ func init() {
 	if err != nil {
 		log.Panic(err)
 	}
-
 }
 
 func main() {
+	defer db.Close()
 	router := httprouter.New()
 	os.Setenv("PORT", "3000") //TODO: remove when push to heroku
-
-	// Setup custom message validate
-	lib.CustomMessageErrorValidate()
-	// Other router
-	router.GET("/", controllers.HelloWorld)
-	// User router
-	controllers.UserRouter(router, db)
+	// Initialize router
+	routes.InitRoute(router, db)
 	// Static file router
 	router.ServeFiles("/static/*filepath", http.Dir("assets/"))
 	// Start server

@@ -1,0 +1,26 @@
+{{define "title"}}<title>Login</title>{{end}}
+
+{{define "content"}}
+    <h1 class="text-center bg-red-100 text-4xl">LOGIN</h1>
+    {{if .Error }}
+        <div class="err-warning text-center bg-yellow-500">
+            {{range $value := .Error}}
+                <p class="font-bold" style="color: darkred">{{$value}}</p>
+            {{end}}
+        </div>
+    {{end}}
+    <form method="post" action="/login">
+        <div class="flex justify-around bg-gray-200 p-2">
+            <label class="p-2 mr-8">Email</label>
+            <input type="text" name="email" class="w-full" autocomplete="false"/>
+        </div>
+        <div class="flex justify-around bg-gray-200 p-2">
+            <label class="p-2">Password</label>
+            <input type="password" name="password" class="w-full" autocomplete="false"/>
+        </div>
+        <div class="text-center bg-gray-200 p-2">
+            <button type="submit" class="bg-gray-200 text-center p-2 border-teal-400 border-solid border">Login
+            </button>
+        </div>
+    </form>
+{{end}}

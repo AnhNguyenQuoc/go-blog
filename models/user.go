@@ -2,11 +2,11 @@ package models
 
 import (
 	"errors"
+	"github.com/AnhNguyenQuoc/go-blog/lib"
 	"github.com/jinzhu/gorm"
-	"regexp"
 )
 
-var regexEmail = regexp.MustCompile(`^\w.+@(\w)+\.\w+$`)
+
 
 type User struct {
 	gorm.Model
@@ -38,7 +38,7 @@ func (user User) Validate() map[string]string {
 		err["email"] = "The email field is required"
 	}
 
-	if !regexEmail.MatchString(user.Email) {
+	if !lib.RegexEmail.MatchString(user.Email) {
 		err["emailFormat"] = "The email field is not format email"
 	}
 
@@ -47,4 +47,8 @@ func (user User) Validate() map[string]string {
 	}
 
 	return err
+}
+
+func (user User) GetID() int {
+	return int(user.ID)
 }
