@@ -22,6 +22,7 @@ func TodoRouter(r *httprouter.Router, db *gorm.DB) {
 	r.GET("/todos", TodosHandler)
 	r.POST("/todo", CheckAuthenticate(TodoHandler))
 	r.DELETE("/todo/:id", CheckAuthenticate(TodoHandler))
+	r.PATCH("/todo/:id/:type", CheckAuthenticate(TodoHandler))
 }
 
 func TodosHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -50,8 +51,12 @@ func TodoHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
 		w.WriteHeader(http.StatusNoContent)
+	} else if r.Method == "PATCH" {
+		todoService.Update(ps.ByName("id"), ps.ByName("type"))
+
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(ps.ByName("type")))
 	}
 
 }

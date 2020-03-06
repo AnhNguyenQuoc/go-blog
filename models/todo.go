@@ -26,7 +26,7 @@ func (t TodoService) Create(data *Todo) error {
 
 func (t TodoService) All() []Todo {
 	var todos []Todo
-	t.DB.Table("todos").Find(&todos)
+	t.DB.Table("todos").Order("created_at asc").Find(&todos)
 
 	return todos
 }
@@ -34,6 +34,17 @@ func (t TodoService) All() []Todo {
 func (t TodoService) Delete(id string) error {
 	idTodo, _ := strconv.Atoi(id)
 	if result := t.DB.Table("todos").Where("id = ?", idTodo).Delete(&Todo{}); result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (t TodoService) Update(id, done string) error {
+	idTodo, _ := strconv.Atoi(id)
+	status, _ := strconv.ParseBool(done)
+	if result := t.DB.Table("todos").Where("id = ?", idTodo).Update("done", status)
+		result.Error != nil {
 		return result.Error
 	}
 

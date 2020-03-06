@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,7 +17,6 @@ func HashPassword(pwd string) (string, error) {
 func AuthenticatePassword(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	if err != nil {
-		fmt.Println(err)
 		return false
 	}
 	return true

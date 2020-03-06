@@ -37,11 +37,19 @@
         {{range $x := .Todos}}
             <tr>
                 <td class="border px-4 py-2">{{$x.Name}}</td>
-                <td class="border px-4 py-2">{{if $x.Done}}
-                        <img class="h-5 w-5  mr-auto ml-auto" src="/static/others/correct.svg"/>
+                <td class="border px-4 py-2 h-full flex{{if $login}} justify-between {{else}} justify-center {{end}}">
+                    {{if $x.Done}}
+                        <img class="h-5 w-5 text-center" src="/static/others/correct.svg"/>
                     {{else}}
-                        X
-                    {{end}}</td>
+                        <div class="text-center">
+                            X
+                        </div>
+                    {{end}}
+                    {{if $login}}
+                        <img src="/static/others/change.svg" class="h-5 w-5 text-left cursor-pointer" data-status="{{$x.Done}}"
+                             data-id="{{$x.ID}}" onclick="changeStatusTodo(this)"/>
+                    {{end}}
+                </td>
                 <td class="border px-4 py-2">
                     {{formatDate $x.CreatedAt "01/02/2006"}}
                     |
@@ -89,6 +97,17 @@
                 method: "DELETE"
             }).then(() => {
                 btn.parentNode.parentNode.parentNode.removeChild(btn.parentNode.parentNode)
+            })
+        }
+
+        async function changeStatusTodo(btn) {
+            const value = btn.dataset.status !== 'true'
+            const url = `/todo/${btn.dataset.id}/${value}`
+
+            await fetch(url, {
+                method: "PATCH"
+            }).then(async () => {
+                window.location.reload()
             })
         }
     </script>
