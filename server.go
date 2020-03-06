@@ -37,7 +37,6 @@ func init() {
 func main() {
 	defer db.Close()
 	router := httprouter.New()
-	os.Setenv("PORT", "3000") //TODO: remove when push to heroku
 	// Initialize router
 	routes.InitRoute(router, db)
 	// Static file router

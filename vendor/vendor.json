@@ -1,0 +1,74 @@
+{
+	"comment": "",
+	"heroku.goVersion": "1.13.8",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "127FjqB8R9+ewoYNxa6svdJgdRU=",
+			"path": "github.com/jinzhu/gorm",
+			"revision": "7ea143b5484fe28148d5c73cfd43b26e8a89c94e",
+			"revisionTime": "2020-03-05T06:48:31Z"
+		},
+		{
+			"checksumSHA1": "uuiW4hoYTOqWettGpKw4fGfGMFQ=",
+			"path": "github.com/jinzhu/gorm/dialects/postgres",
+			"revision": "7ea143b5484fe28148d5c73cfd43b26e8a89c94e",
+			"revisionTime": "2020-03-05T06:48:31Z"
+		},
+		{
+			"checksumSHA1": "OoMUQ1Vnt/5gzbvdsOZz6zKShz4=",
+			"path": "github.com/jinzhu/inflection",
+			"revision": "196e6ce06ca4513fbcfcbc35dc15f66074df47c9",
+			"revisionTime": "2020-02-16T10:24:04Z"
+		},
+		{
+			"checksumSHA1": "j7Ia6Oa+YC3CPhr9tEudFVJcqkw=",
+			"path": "github.com/joho/godotenv",
+			"revision": "d6ee6871f21dd95e76563a90f522ce9fe75443f8",
+			"revisionTime": "2020-03-01T20:46:15Z"
+		},
+		{
+			"checksumSHA1": "U1yzIO34W0A7w8uuWiotoun1oDQ=",
+			"path": "github.com/julienschmidt/httprouter",
+			"revision": "8c9f31f047a304abedb5614d4a18a843cd5f4a40",
+			"revisionTime": "2020-01-14T09:48:04Z"
+		},
+		{
+			"checksumSHA1": "iSGHMfkwqVO2WV9lcUhiZ5lXFKA=",
+			"path": "github.com/lib/pq",
+			"revision": "9eb3fc897d6fd97dd4aad3d0404b54e2f7cc56be",
+			"revisionTime": "2020-01-16T17:15:13Z"
+		},
+		{
+			"checksumSHA1": "EnMmNGgpDa5sNw0Zs5RhvNDcP2g=",
+			"path": "github.com/lib/pq/hstore",
+			"revision": "9eb3fc897d6fd97dd4aad3d0404b54e2f7cc56be",
+			"revisionTime": "2020-01-16T17:15:13Z"
+		},
+		{
+			"checksumSHA1": "AU3fA8Sm33Vj9PBoRPSeYfxLRuE=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "9eb3fc897d6fd97dd4aad3d0404b54e2f7cc56be",
+			"revisionTime": "2020-01-16T17:15:13Z"
+		},
+		{
+			"checksumSHA1": "n0MMCrKKsQuuhv7vLsrtRUGJVA8=",
+			"path": "github.com/lib/pq/scram",
+			"revision": "9eb3fc897d6fd97dd4aad3d0404b54e2f7cc56be",
+			"revisionTime": "2020-01-16T17:15:13Z"
+		},
+		{
+			"checksumSHA1": "oCH3J96RWvO8W4xjix47PModpio=",
+			"path": "golang.org/x/crypto/bcrypt",
+			"revision": "78000ba7a073cafc0278790f6bce552a0f25850e",
+			"revisionTime": "2020-03-02T20:51:17Z"
+		},
+		{
+			"checksumSHA1": "q+XI9g44wd9mYvf3S5Wo8YZjAus=",
+			"path": "golang.org/x/crypto/blowfish",
+			"revision": "78000ba7a073cafc0278790f6bce552a0f25850e",
+			"revisionTime": "2020-03-02T20:51:17Z"
+		}
+	],
+	"rootPath": "github.com/AnhNguyenQuoc/go-blog"
+}
