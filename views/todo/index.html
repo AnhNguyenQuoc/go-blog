@@ -1,18 +1,19 @@
 {{define "title"}}<title>Todo list</title>{{end}}
 
 {{define "content"}}
-    {{if .Email}}
-        <table class="md:table-auto">
+    {{$login := .Email}}
+    {{if $login}}
+        <table class="md:table-auto w-full">
             <thead>
             <tr>
-                <th class="w-1/2 px-4 py-2">Name</th>
-                <th class="w-1/4 px-4 py-2"></th>
+                <th class="border px-4 py-2">Name</th>
+                <th class="border px-4 py-2"></th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td class="border px-4 py-2">
-                    <input type="text" name="name" class="placeholder-black" placeholder="Enter content"
+                    <input type="text" name="name" class="placeholder-black w-full h-full" placeholder="Enter content"
                            id="name-todo"/>
                 </td>
                 <td class="border px-4 py-2 flex flex-col">
@@ -24,17 +25,71 @@
             </tbody>
         </table>
     {{end}}
+    <table class="table-auto w-full h-full text-center">
+        <thead>
+        <tr>
+            <th class="border px-4 py-2">Content</th>
+            <th class="border px-4 py-2">Status</th>
+            <th class="border px-4 py-2">Created</th>
+        </tr>
+        </thead>
+        <tbody id="todo-table">
+        {{range $x := .Todos}}
+            <tr>
+                <td class="border px-4 py-2">{{$x.Name}}</td>
+                <td class="border px-4 py-2">{{if $x.Done}}
+                        <img class="h-5 w-5  mr-auto ml-auto" src="/static/others/correct.svg"/>
+                    {{else}}
+                        X
+                    {{end}}</td>
+                <td class="border px-4 py-2">
+                    {{formatDate $x.CreatedAt "01/02/2006"}}
+                    |
+                    {{if $login}}
+                        <button class="btn-delete" data-id="{{$x.ID}}" onclick="deleteTodo(this)">X</button>
+                    {{end}}
+                </td>
+            </tr>
+        {{end}}
+        </tbody>
+    </table>
 {{end}}
 
 
 {{define "javascript"}}
     <script>
-        function createTodo() {
+        async function createTodo() {
             const name = document.getElementById("name-todo").value
-            const xmlHTTP = new XMLHttpRequest();
-            xmlHTTP.open("POST", "/todo");
-            xmlHTTP.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
-            xmlHTTP.send(JSON.stringify({"name": name}))
+            const table = document.getElementById("todo-table")
+
+            await fetch("/todo", {
+                method: "POST",
+                body: JSON.stringify({"name": name})
+            }).then(async function (response) {
+                const data = await response.json()
+                const status = data.done ? `<img class="h-5 w-5 mr-auto ml-auto" src="/static/others/correct.svg"/>` : `X`
+                const formatDate = new Date(data.CreatedAt).toLocaleDateString("en-US", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                })
+
+                table.insertAdjacentHTML('afterbegin',
+                    `<tr>
+                        <td class="border px-4 py-2">${data.name}</td>
+                        <td class="border px-4 py-2">${status}</td>
+                        <td class="border px-4 py-2">${formatDate}</td>
+                    </tr>`)
+            })
+        }
+
+        async function deleteTodo(btn) {
+            const url = `/todo/${btn.dataset.id}`
+            await fetch(url, {
+                method: "DELETE"
+            }).then(() => {
+                btn.parentNode.parentNode.parentNode.removeChild(btn.parentNode.parentNode)
+            })
         }
     </script>
 {{end}}

@@ -6,8 +6,6 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-
-
 type User struct {
 	gorm.Model
 	Username string `gorm:"not_null"`
@@ -27,28 +25,32 @@ func (r *UserService) CreateUser(user *User) error {
 	return nil
 }
 
-func (user User) Validate() map[string]string {
+func (u User) Validate() map[string]string {
 	err := map[string]string{}
 
-	if user.Username == "" {
+	if u.Username == "" {
 		err["name"] = "The username field is required"
 	}
 
-	if user.Email == "" {
+	if u.Email == "" {
 		err["email"] = "The email field is required"
 	}
 
-	if !lib.RegexEmail.MatchString(user.Email) {
+	if !lib.RegexEmail.MatchString(u.Email) {
 		err["emailFormat"] = "The email field is not format email"
 	}
 
-	if user.Password == "" {
+	if u.Password == "" {
 		err["password"] = "The password field is required"
 	}
 
 	return err
 }
 
-func (user User) GetID() int {
-	return int(user.ID)
+func (u *User) BeforeSave() (err error) {
+	u.Password, err = lib.HashPassword(u.Password)
+	if err != nil {
+		return err
+	}
+	return nil
 }

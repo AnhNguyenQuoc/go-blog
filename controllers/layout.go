@@ -20,7 +20,7 @@ func LayoutRouter(r *httprouter.Router, db *gorm.DB) {
 
 func HelloWorld(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	w.WriteHeader(http.StatusOK)
-	user, ok := CurrentUser(w, r, layoutService.DB)
+	user, ok := CurrentUser(w, r)
 	if !ok {
 		lib.ParseTemplate(w, "layout/index", nil)
 		return

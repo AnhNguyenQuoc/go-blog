@@ -3,12 +3,13 @@ package models
 import (
 	"errors"
 	"github.com/jinzhu/gorm"
+	"strconv"
 )
 
 type Todo struct {
 	gorm.Model
-	Name string `gorm:"not_null"`
-	Done bool   `gorm:"default:false"`
+	Name string `gorm:"not_null" json:"name"`
+	Done bool   `gorm:"default:false" json:"done"`
 }
 
 type TodoService struct {
@@ -28,4 +29,13 @@ func (t TodoService) All() []Todo {
 	t.DB.Table("todos").Find(&todos)
 
 	return todos
+}
+
+func (t TodoService) Delete(id string) error {
+	idTodo, _ := strconv.Atoi(id)
+	if result := t.DB.Table("todos").Where("id = ?", idTodo).Delete(&Todo{}); result.Error != nil {
+		return result.Error
+	}
+
+	return nil
 }

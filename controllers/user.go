@@ -40,15 +40,23 @@ func (u UserController) Create(w http.ResponseWriter, r *http.Request, _ httprou
 			errorMessage := ErrorMessage{err}
 			lib.ParseTemplate(w, "/users/create", errorMessage)
 			return
-		} else if r.Method == "POST" {
-			user.Password, _ = lib.HashPassword(r.FormValue("password"))
+		} else {
 			err := userService.CreateUser(user)
 			if err != nil {
 				errorMessage := ErrorMessage{Error: map[string]string{"Error": fmt.Sprintln(err)}}
 				lib.ParseTemplate(w, "/users/create", errorMessage)
 			}
-			lib.ParseTemplate(w, "layout/index", nil)
+			Login(user, w)
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
 			return
 		}
 	}
+}
+
+func Login(user *models.User, w http.ResponseWriter) {
+	cookie := http.Cookie{
+		Name:  "user_email",
+		Value: user.Email,
+	}
+	http.SetCookie(w, &cookie)
 }

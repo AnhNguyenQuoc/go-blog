@@ -20,9 +20,9 @@ type DBConfig struct {
 }
 
 type Model struct {
-	ID        uint `gorm:"primary_key"`
-	createdAt time.Time
-	updatedAt time.Time
+	ID        uint `gorm:"primary_key" json:"id"`
+	createdAt time.Time `json:"created_at"`
+	updatedAt time.Time `json:"updated_at"`
 }
 
 func InitDB(config DBConfig) (*gorm.DB, error) {

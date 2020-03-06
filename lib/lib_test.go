@@ -1,7 +1,6 @@
 package lib
 
 import (
-	"log"
 	"os"
 	"testing"
 )
@@ -18,14 +17,8 @@ func TestGetPort(t *testing.T) {
 
 func TestBcrypt(t *testing.T) {
 	mypwd := "123456"
-	hashPassword, _ := HashPassword(mypwd)
+	hashPassword := "$2a$10$YryYXVCk5KE2IoZR1e41WOEE6RMSxduBVb6XgpqqMojsduWTEmH02"
 	if auth := AuthenticatePassword(mypwd, hashPassword); !auth {
 		t.Error("Error Bcrypt algothym")
-	}
-}
-
-func CheckError(err error) {
-	if err != nil {
-		log.Fatal(err)
 	}
 }

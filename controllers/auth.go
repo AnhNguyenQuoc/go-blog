@@ -22,6 +22,7 @@ type AuthSession struct {
 
 type AuthResponseError struct {
 	Error []string
+	Email string
 }
 
 type AuthService struct {
@@ -54,14 +55,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 		if !lib.AuthenticatePassword(r.FormValue("password"), user.Password) {
 			w.WriteHeader(http.StatusBadRequest)
 			errors.Error = append(errors.Error, "Authenticate fail. Please check again")
+			errors.Email = ""
 			lib.ParseTemplate(w, "/auth/login", errors)
 			return
 		}
-		cookie := http.Cookie{
-			Name:  "user_email",
-			Value: user.Email,
-		}
-		http.SetCookie(w, &cookie)
+
+		Login(&user, w)
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 		return
 	}
@@ -93,16 +92,27 @@ func validateAuth(r *http.Request) []string {
 	return result
 }
 
-func CurrentUser(w http.ResponseWriter, r *http.Request, db *gorm.DB) (models.User, bool) {
+func CurrentUser(w http.ResponseWriter, r *http.Request) (models.User, bool) {
 	userEmail, err := r.Cookie("user_email")
 	var user models.User
 	if err != nil {
 		return user, false
 	}
 
-	if result := db.Table("users").Where("email = ?", userEmail.Value).Find(&user); result.Error != nil {
+	if result := Auth.DB.Table("users").Where("email = ?", userEmail.Value).Find(&user); result.Error != nil {
 		return user, false
 	}
 
 	return user, true
+}
+
+func CheckAuthenticate(f httprouter.Handle) httprouter.Handle {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		_, ok := CurrentUser(w, r)
+		if !ok {
+			http.Redirect(w, r, "/", http.StatusUnauthorized)
+			return
+		}
+		f(w, r, ps)
+	}
 }
